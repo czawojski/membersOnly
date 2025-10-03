@@ -3,25 +3,21 @@
 const { Client } = require("pg");
 
 const SQL = `
-CREATE TABLE IF NOT EXISTS items (
+CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR ( 255 ),
-  quantity INTEGER DEFAULT 1,
-  price INTEGER,
-  type VARCHAR ( 10 ),
-  creator VARCHAR ( 80 )
+  fullname VARCHAR ( 255 ),
+  username VARCHAR ( 255 ) UNIQUE,
+  password VARCHAR ( 255 )
 );
 
-CREATE TABLE IF NOT EXISTS category (
+CREATE TABLE IF NOT EXISTS messages (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  title VARCHAR ( 255 ), 
-  description VARCHAR ( 255 )
+  title VARCHAR ( 80 ), 
+  body VARCHAR ( 140 ),
+  posted TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  username VARCHAR ( 255 ) REFERENCES users(username)
 );
 
-CREATE TABLE IF NOT EXISTS creator (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR ( 255 )
-);
 
 INSERT INTO items (name, quantity, price, type, creator) 
 VALUES
@@ -53,7 +49,7 @@ async function main() {
   console.log("seeding...");
   const client = new Client({
     // "postgresql://czawojski:1234@localhost:3000/inventory"
-    connectionString: "postgresql://czawojski@localhost/inventory",
+    connectionString: "postgresql://czawojski@localhost/clubhouse",
   });
   await client.connect();
   await client.query(SQL);

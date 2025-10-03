@@ -1,47 +1,24 @@
-<html>
-  <head>
-    <title>Laila's Modshop</title>
-    <link rel="stylesheet" href="/styles.css">
-  </head>
-  <body>
-    <nav><%- include('navbar', {links: links}) %></nav>
-
-    <br></br>
-
-    <div class="indexcontainer">
-    <% items.forEach((item) => { %>
-    <div class="indexcard">
-      <div class="msgcontainer">
-        <p><%= item.title %></p>
-      </div>
-      <div class="namecontainer">
-        <h4><b>Description: </b></h4>
-        <p><%= item.description %></p>
-      </div>
-      <div class="btn">
-        <a href="/<%= item.title %>"><button>View items</button></a></li>
-      </div>
-    </div>
-    <% }) %>
-    </div>
-    
-
-    <div class="formarea">
-      <h2>Add an item to the inventory:</h2>
-      <form method="POST" action="/">
-        <label for="addItem">Item:</label><br>
-        <input type="text" id="addItem" name="addItem" value=""><br><br>
-        <label for="addQuantity">Quantity:</label><br>
-        <input type="text" id="addQuantity" name="addQuantity" value=""><br><br>
-        <label for="addPrice">Price:</label><br>
-        <input type="text" id="addPrice" name="addPrice" value=""><br><br>
-        <label for="addType">Type:</label><br>
-        <input type="text" id="addType" name="addType" value=""><br><br>
-        <label for="addCreator">Creator:</label><br>
-        <input type="text" id="addCreator" name="addCreator" value=""><br><br>
-        <input type="submit" value="Submit">
-      </form>
-    </div>
-
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Log In</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <nav><%- include('navbar', {links: links}) %></nav>
+  <% if (locals.user) {%>
+    <h1>WELCOME BACK <%= user.username %></h1>
+    <a href="/log-out">LOG OUT</a>
+  <% } else { %>
+    <h1>please log in</h1>
+    <form action="/log-in" method="POST">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="username" type="text" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit">Log In</button>
+    </form>
+  <%}%>
+</body>
 </html>
