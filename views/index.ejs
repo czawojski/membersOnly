@@ -8,10 +8,30 @@
 <body>
   <nav><%- include('navbar', {links: links}) %></nav>
   <% if (locals.user) {%>
-    <h1>WELCOME BACK <%= user.username %></h1>
+    <h1>WELCOME BACK, <%= user.fullname %></h1>
     <a href="/log-out">LOG OUT</a>
+    <br></br>
+    <a href="/posts">Post a message</a>
+    <br></br>
+    <div class="indexcontainer">
+    <% messages.forEach((message, index) => { %>
+    <div class="indexcard">
+      <div class="msgcontainer">
+        <p><%= message.title %></p>
+        <p><%= message.body %></p>
+      </div>
+      <div class="namecontainer">
+        <h4><b><%= message.username %></b></h4>
+        <p><%= message.posted.toLocaleString() %></p>
+      </div>
+      <div class="btn">
+        <a href="/details/<%= index %>"><button>Open</button></a></li>
+      </div>
+    </div>
+    <% }) %>
+    </div>
   <% } else { %>
-    <h1>please log in</h1>
+    <h1>Please log in</h1>
     <form action="/log-in" method="POST">
       <label for="username">Username</label>
       <input id="username" name="username" placeholder="username" type="text" />

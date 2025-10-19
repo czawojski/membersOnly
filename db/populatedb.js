@@ -17,32 +17,6 @@ CREATE TABLE IF NOT EXISTS messages (
   posted TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   username VARCHAR ( 255 ) REFERENCES users(username)
 );
-
-
-INSERT INTO items (name, quantity, price, type, creator) 
-VALUES
-  ('James Bond', 3, 450, 'moddy', 'bootleg'),
-  ('Xarghis Khan', 1, 1350, 'moddy', 'bootleg'),
-  ('Brigitte Stahlhelm', 2, 800, 'moddy', 'Honey Pilar'),
-  ('Complete Guardian', 1, 1700, 'moddy', 'Laila\'),
-  ('productivity', 11, 120, 'moddy', 'Laila'),
-  ('Slow burn', 1, 450, 'moddy', 'Honey Pilar'),
-  ('Arabic', 3, 450, 'daddy', 'Laila'),
-  ('English', 2, 200, 'daddy', 'Laila'),
-  ('pain tolerance', 7, 650, 'daddy', 'Laila'),
-  ('unchecked rage', 1, 1000, 'daddy', 'bootleg'),
-  ('sleep control', 6, 50, 'daddy', 'Laila');
-
-INSERT INTO category (title) 
-VALUES
-  ('moddy'),
-  ('daddy');
-
-INSERT INTO creator (name) 
-VALUES
-  ('Honey Pilar'),
-  ('Laila'),
-  ('bootleg');
 `;
 
 async function main() {

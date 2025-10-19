@@ -20,6 +20,7 @@ const pool = new Pool({
 const links = [
   { href: "/", text: "Home" },
   { href: "/sign-up", text: "Sign Up" },
+  { href: "/posts", text: "Posts" },
 ];
 
 app.set("views", path.join(__dirname, "views"));
@@ -34,14 +35,25 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-// app.get("/", (req, res) => {
+async function getAllMessages() {
+  const { rows } = await pool.query("SELECT * FROM messages");
+  return rows;
+}
+
+app.get("/", async (req, res) => {
+  const messages = await getAllMessages();
+  res.render("index", { title: "Members Only", user: req.user, links: links, messages: messages });
+});
+
+
+// 10-16 replaced with above: app.get("/", (req, res) => {
 //   res.render("index", { user: req.user, links: links });
 // });
 
-// 10-2: temporarily replace above to test connection
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
+// 10-2: temporarily replaced above to test connection
+// app.get("/", (req, res) => {
+//   res.send("Hello, World!");
+// });
 
 app.get("/log-out", (req, res, next) => {
   req.logout((err) => {
@@ -57,7 +69,7 @@ app.get("/sign-up", (req, res) => res.render("sign-up-form", {links: links}));
 app.post("/sign-up", async (req, res, next) => {
  try {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, hashedPassword]);
+  await pool.query("INSERT INTO users (fullname, username, password) VALUES ($1, $2, $3)", [req.body.fullname, req.body.username, hashedPassword]);
   res.redirect("/");
  } catch (error) {
     console.error(error);
@@ -72,6 +84,22 @@ app.post(
     failureRedirect: "/"
   })
 );
+
+// 10-13-25
+app.get("/posts", (req, res) => {
+  res.render("posts", { user: req.user, links: links });
+});
+
+// 10-13-25
+app.post("/posts", async (req, res, next) => {
+ try {
+  await pool.query("INSERT INTO messages (username, title, body) VALUES ($1, $2, $3)", [req.body.username, req.body.title, req.body.message]);
+  res.redirect("/");
+ } catch (error) {
+    console.error(error);
+    next(error);
+   }
+});
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
