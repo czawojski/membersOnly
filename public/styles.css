@@ -8,13 +8,13 @@ h2 {
 /* form */
 
 .formarea {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #333;
-    width: 100vw;
-    height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #333;
+  width: 100vw;
+  height: 50vh;
 }
 
 ul {
@@ -68,11 +68,16 @@ li a:hover .nav {
   background-color: white;
 }
 
+form > .btn {
+  margin-left: 150px;
+  margin-bottom: 10px;
+}
+
 .btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 /* styles for details view */

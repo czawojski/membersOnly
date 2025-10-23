@@ -20,7 +20,7 @@ const pool = new Pool({
 const links = [
   { href: "/", text: "Home" },
   { href: "/sign-up", text: "Sign Up" },
-  { href: "/posts", text: "Posts" },
+  { href: "/post", text: "Post" },
 ];
 
 app.set("views", path.join(__dirname, "views"));
@@ -86,14 +86,26 @@ app.post(
 );
 
 // 10-13-25
-app.get("/posts", (req, res) => {
-  res.render("posts", { user: req.user, links: links });
+app.get("/post", (req, res) => {
+  res.render("post", { user: req.user, links: links });
 });
 
 // 10-13-25
-app.post("/posts", async (req, res, next) => {
+app.post("/post", async (req, res, next) => {
  try {
   await pool.query("INSERT INTO messages (username, title, body) VALUES ($1, $2, $3)", [req.body.username, req.body.title, req.body.message]);
+  res.redirect("/");
+ } catch (error) {
+    console.error(error);
+    next(error);
+   }
+});
+
+// 10-20-25
+app.post("/delete/:id", async (req, res, next) => {
+  try {
+  await pool.query("DELETE FROM messages WHERE id = $1", [req.params.id]);
+  console.log(req.params.id);
   res.redirect("/");
  } catch (error) {
     console.error(error);
