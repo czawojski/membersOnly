@@ -21,6 +21,7 @@ const links = [
   { href: "/", text: "Home" },
   { href: "/sign-up", text: "Sign Up" },
   { href: "/post", text: "Post" },
+  { href: "/member", text: "Join the Club" },
 ];
 
 app.set("views", path.join(__dirname, "views"));
@@ -69,7 +70,7 @@ app.get("/sign-up", (req, res) => res.render("sign-up-form", {links: links}));
 app.post("/sign-up", async (req, res, next) => {
  try {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  await pool.query("INSERT INTO users (fullname, username, password) VALUES ($1, $2, $3)", [req.body.fullname, req.body.username, hashedPassword]);
+  await pool.query("INSERT INTO users (fullname, username, password, isadmin) VALUES ($1, $2, $3, $4)", [req.body.fullname, req.body.username, hashedPassword, req.body.isadmin]);
   res.redirect("/");
  } catch (error) {
     console.error(error);
@@ -111,6 +112,23 @@ app.post("/delete/:id", async (req, res, next) => {
     console.error(error);
     next(error);
    }
+});
+
+// 10-26-25
+app.get("/member", (req, res) => res.render("member", {links: links}));
+
+app.post("/member", async (req, res, next) => {
+  if (req.body.ismember == 1234) {
+    try {
+      await pool.query("UPDATE users SET ismember = 't' WHERE username = $1", [req.user.username]);
+      res.redirect("/");
+    } catch (error) {
+        console.error(error);
+        next(error);
+    } 
+  } else {
+    res.redirect("/");
+  }
 });
 
 passport.use(

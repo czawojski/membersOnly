@@ -8,6 +8,7 @@
 </head>
 <body>
     <nav><%- include('navbar', {links: links}) %></nav>
+    <% if (locals.user) {%>
     <h1>Create a message, <%= user.fullname %></h1>
     <form action="/post" method="POST">
       <label for="username">Username:</label>
@@ -18,5 +19,8 @@
       <input id="message" name="message" placeholder="message" type="text" />
       <button type="submit">Post message</button>
     </form>
+    <% } else { %>
+      <h3>Log in to post a message</h3>
+    <%}%>
 </body>
 </html>

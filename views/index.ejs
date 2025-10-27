@@ -7,7 +7,7 @@
 </head>
 <body>
   <nav><%- include('navbar', {links: links}) %></nav>
-  <% if (locals.user && user.isadmin) {%>
+  <% if (locals.user && user.isadmin && user.ismember) {%>
     <h1>WELCOME BACK, <%= user.fullname %></h1>
     <a href="/log-out">LOG OUT</a>
     <br></br>
@@ -32,7 +32,7 @@
     <% }) %>
     </div>
   
-  <% } else if (locals.user) {%>
+  <% } else if (locals.user && user.ismember) {%>
     <h1>WELCOME BACK, <%= user.fullname %></h1>
     <a href="/log-out">LOG OUT</a>
     <br></br>
@@ -53,6 +53,11 @@
     </div>
         <% }) %>
     </div>
+
+    <% } else if (locals.user) {%>
+    <h1>WELCOME BACK, <%= user.fullname %></h1>
+    <h3>Join the club to see posts</h3>
+
 
   <% } else { %>
     <h1>Please log in</h1>

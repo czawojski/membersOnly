@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Join the Club</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <nav><%- include('navbar', {links: links}) %></nav>
+  <h1>Join the club</h1>
+  <form action="/member" method="POST">
+    <label for="ismember">Join the club with the secret code:</label>
+    <input id="ismember" name="ismember" type="text" />
+    <button type="submit">Join</button>
+  </form>
+</body>
+</html>
